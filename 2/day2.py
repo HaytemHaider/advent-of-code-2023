@@ -38,8 +38,6 @@ set_game_id_red = set([index + 1 for index, element in enumerate(r) if element <
 set_game_id_blue = set([index + 1 for index, element in enumerate(b) if element <= fulfillment_blue])
 set_game_id_green = set([index + 1 for index, element in enumerate(g) if element <= fulfillment_green])
 
-set_all_games = set(range(1, number_of_games + 1))
-
 possible_games = set_game_id_red & set_game_id_blue & set_game_id_green
 
 print(sum(possible_games))
