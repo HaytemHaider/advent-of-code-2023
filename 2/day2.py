@@ -19,20 +19,17 @@ g = [0]
 for id, game in enumerate(input_strings):
     reveals = game.split(':')[1].replace(';', ',').split(',')
     for reveal in reveals:
-        amount = reveal.split()[0]
-        if red in reveal and r[id] < int(amount):
-            r[id] = int(amount)
-
-        elif blue in reveal and b[id] < int(amount):
-            b[id] = int(amount)
-
-        elif green in reveal and g[id] < int(amount):
-            g[id] = int(amount)
-
+        amount = int(reveal.split()[0])
+        if red in reveal and r[id] < amount:
+            r[id] = amount
+        elif blue in reveal and b[id] < amount:
+            b[id] = amount
+        elif green in reveal and g[id] < amount:
+            g[id] = amount
     if number_of_games-1 > id:
-      r.append(0)
-      b.append(0)
-      g.append(0)
+        r.append(0)
+        b.append(0)
+        g.append(0)
 
 set_game_id_red = set([index + 1 for index, element in enumerate(r) if element <= fulfillment_red])
 set_game_id_blue = set([index + 1 for index, element in enumerate(b) if element <= fulfillment_blue])
