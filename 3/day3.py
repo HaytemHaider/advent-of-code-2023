@@ -56,31 +56,27 @@ def find_possible_gear_parts(matrix):
     list_of_possible_parts = []
     foundDigit = ""
     started = False
+    midpoint = (len(matrix[0])-1)/2
     for rowidx, row in enumerate(matrix):
         for colidx, element in enumerate(row):             
-            if not element.isdigit():
-                if foundDigit != "" and started and colidx != 0:
-                    list_of_possible_parts.append(foundDigit)
-                foundDigit = ""
-                started = False
-            elif element.isdigit() and started:
-                if colidx == (len(matrix[0]) - 1):
+            if element.isdigit():
+                if not started and colidx != 0 and not str(row[colidx - 1]).isdigit() and colidx <= midpoint + 1:
+                    foundDigit += element
+                    started = True
+                elif started and colidx != len(matrix[0]):
+                    foundDigit += element
+                elif started and colidx == len(matrix[0]):
                     foundDigit = ""
                     started = False
-                else:
-                    foundDigit += element
-            elif element.isdigit() and (colidx != 0 and not str(row[colidx-1]).isdigit()):
-                foundDigit += element
-                started = True
+            if not element.isdigit() and started:
+                if str(row[colidx - 1]).isdigit():
+                    if colidx >= midpoint:
+                        list_of_possible_parts.append(foundDigit)
+                foundDigit = ""
+                started = False
 
     return list_of_possible_parts
 
-    # Unpack the coordinates
-    (x1_min, y1_min), (x1_max, y1_max) = coord1
-    (x2_min, y2_min), (x2_max, y2_max) = coord2
-
-    # Check for overlap
-    return not (x1_max < x2_min or x1_min > x2_max or y1_max < y2_min or y1_min > y2_max)
 
 file_path = '3/input.txt'
 
@@ -114,7 +110,8 @@ possible_gear = find_gear_symbol(matrix)
 ratios = []
 
 for gear in possible_gear:
-    possible_gear_parts = find_possible_gear_parts(extract_submatrix(matrix, gear[0], gear[1]))
+    subm = extract_submatrix(matrix, gear[0], gear[1])   
+    possible_gear_parts = find_possible_gear_parts(subm)
     if len(possible_gear_parts) > 1:
         ratios.append(int(possible_gear_parts[0]) * int(possible_gear_parts[1]))
 
